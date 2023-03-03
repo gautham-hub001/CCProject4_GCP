@@ -5,3 +5,5 @@
 5. Click on open console
 6. git clone your repo
 7. gcloud app deploy
+
+Note: name of the pyhton file should be main.py
