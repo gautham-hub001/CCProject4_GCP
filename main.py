@@ -2,7 +2,7 @@ import sqlite3
 
 from flask import Flask, request, g, render_template, send_file
 
-DATABASE = '/var/www/html/flaskapp/example.db'
+DATABASE = '/home/gauthampothana007/CCProject4_GCP/example.db'
 #DATABASE ='/Users/gauthampothana/Downloads/CCProject4/example.db'
 app = Flask(__name__)
 app.config.from_object(__name__)
