@@ -2,19 +2,19 @@ import sqlite3
 
 from flask import Flask, request, g, render_template, send_file
 
-DATABASE = '/home/gauthampothana007/CCProject4_GCP/example.db'
+# DATABASE = '/home/gauthampothana007/CCProject4_GCP/example.db'
 #DATABASE ='/Users/gauthampothana/Downloads/CCProject4/example.db'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-def connect_to_database():
-    return sqlite3.connect(app.config['DATABASE'])
+# def connect_to_database():
+    # return sqlite3.connect(app.config['DATABASE'])
 
-def get_db():
-    db = getattr(g, 'db', None)
-    if db is None:
-        db = g.db = connect_to_database()
-    return db
+# def get_db():
+#     db = getattr(g, 'db', None)
+#     if db is None:
+#         db = g.db = connect_to_database()
+#     return db
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -22,30 +22,37 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-def execute_query(query, args=()):
-    cur = get_db().execute(query, args)
-    rows = cur.fetchall()
-    cur.close()
-    return rows
+# def execute_query(query, args=()):
+#     cur = get_db().execute(query, args)
+#     rows = cur.fetchall()
+#     cur.close()
+#     return rows
 
-def commit():
-    get_db().commit()
+# def commit():
+#     get_db().commit()
 
 @app.route("/")
 def hello():
-    execute_query("DROP TABLE IF EXISTS userstable")
-    execute_query("CREATE TABLE userstable (firstname text,lastname text,email text)")
+    # execute_query("DROP TABLE IF EXISTS userstable")
+    # execute_query("CREATE TABLE userstable (firstname text,lastname text,email text)")
     return render_template('index.html')
+
+firstname = ''
+lastname = ''
+email = ''
 
 @app.route('/startenquiry', methods =['POST', 'GET'])
 def startinquiry():
     message = ''
     if request.method == 'POST' and str(request.form['ufname']) !="" and str(request.form['ulname']) != "" and str(request.form['mail']) != "":
+        global firstname
+        global lastname
+        global email
         firstname = str(request.form['ufname'])
         lastname = str(request.form['ulname'])
         email = str(request.form['mail'])
-        result = execute_query("""INSERT INTO userstable (firstname, lastname, email) values (?, ?, ?)""",(firstname, lastname, email))
-        commit()
+        # result = execute_query("""INSERT INTO userstable (firstname, lastname, email) values (?, ?, ?)""",(firstname, lastname, email))
+        # commit()
     elif request.method == 'POST':
         message = 'Please enter all fields.'
     return render_template('chat.html', message = message)
@@ -399,13 +406,18 @@ def endchat():
         	  <label for="ufname"><strong>3.What is the fee structure like?</strong></label></br>
         	  <label for="ufname"><strong>4.Tell me more about location of your college</strong></label></br>
         """
-    result = execute_query("""SELECT firstname,lastname,email  FROM userstable""")
+    # result = execute_query("""SELECT firstname,lastname,email  FROM userstable""")
+    # result = list()
+    # result = firstname
     Userdetails = list()
-    if result:
-        for row in result:
-            Userdetails.append(row[0])
-            Userdetails.append(row[1])
-            Userdetails.append(row[2])
+    # if result:
+    #     for row in result:
+    #         Userdetails.append(row[0])
+    #         Userdetails.append(row[1])
+    #         Userdetails.append(row[2])
+    Userdetails.append(firstname)
+    Userdetails.append(lastname)
+    Userdetails.append(email)
     creatordetails= ['Gautham','Pothana','pothangm@mail.uc.edu']
     EndChatHTMLMiddle="""
     <strong>User Details:<br></strong>
