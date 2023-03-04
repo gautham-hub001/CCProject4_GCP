@@ -1,11 +1,13 @@
-import sqlite3
+# import sqlite3
 
-from flask import Flask, request, g, render_template, send_file
+from flask import Flask, request, g, render_template, session
+import os
 
 # DATABASE = '/home/gauthampothana007/CCProject4_GCP/example.db'
 #DATABASE ='/Users/gauthampothana/Downloads/CCProject4/example.db'
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.secret_key = os.urandom(123)
 
 # def connect_to_database():
     # return sqlite3.connect(app.config['DATABASE'])
@@ -37,20 +39,14 @@ def hello():
     # execute_query("CREATE TABLE userstable (firstname text,lastname text,email text)")
     return render_template('index.html')
 
-firstname = ''
-lastname = ''
-email = ''
 
 @app.route('/startenquiry', methods =['POST', 'GET'])
 def startinquiry():
     message = ''
     if request.method == 'POST' and str(request.form['ufname']) !="" and str(request.form['ulname']) != "" and str(request.form['mail']) != "":
-        global firstname
-        global lastname
-        global email
-        firstname = str(request.form['ufname'])
-        lastname = str(request.form['ulname'])
-        email = str(request.form['mail'])
+        session['firstname'] = str(request.form['ufname'])
+        session['lastname'] = str(request.form['ulname'])
+        session['email'] = str(request.form['mail'])
         # result = execute_query("""INSERT INTO userstable (firstname, lastname, email) values (?, ?, ?)""",(firstname, lastname, email))
         # commit()
     elif request.method == 'POST':
@@ -306,7 +302,7 @@ EndChatHTMLLast="""
   </body>
 </html>
 """
-@app.route("/endchat")
+@app.route("/endchat", methods=['GET', 'POST'])
 def endchat():
     global ChatWindowHTMLFirst
     ChatWindowHTMLFirst = """
@@ -415,9 +411,9 @@ def endchat():
     #         Userdetails.append(row[0])
     #         Userdetails.append(row[1])
     #         Userdetails.append(row[2])
-    Userdetails.append(firstname)
-    Userdetails.append(lastname)
-    Userdetails.append(email)
+    Userdetails.append(session.get('firstname'))
+    Userdetails.append(session.get('lastname'))
+    Userdetails.append(session.get('email'))
     creatordetails= ['Gautham','Pothana','pothangm@mail.uc.edu']
     EndChatHTMLMiddle="""
     <strong>User Details:<br></strong>
