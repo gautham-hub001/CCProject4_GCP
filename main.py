@@ -415,6 +415,8 @@ def endchat():
     Userdetails.append(session.get('lastname'))
     Userdetails.append(session.get('email'))
     creatordetails= ['Gautham','Pothana','pothangm@mail.uc.edu']
+    print('Userdetails: ')
+    print(Userdetails)
     EndChatHTMLMiddle="""
     <strong>User Details:<br></strong>
     First Name: """+Userdetails[0]+"""</br>Last Name: """+Userdetails[1]+"""</br>Email: """+Userdetails[2]+"""</br>"""+"""</br></br>
